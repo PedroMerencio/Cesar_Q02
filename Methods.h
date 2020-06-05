@@ -1,0 +1,1 @@
+bool isPermutation(char word1[], unsigned int size1, char word2[], unsigned int size2);
