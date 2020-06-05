@@ -3,11 +3,10 @@
 
 using namespace std;
 
-
 int main()
 {
-    char word1[] = "despite";
-    char word2[] = "desptie";
+    char word1[] = "misspellings";
+    char word2[] = "mpeissngslli";
     int size1, size2;
     bool isPartialPermutation = false;
 

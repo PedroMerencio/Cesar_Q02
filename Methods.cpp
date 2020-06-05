@@ -28,10 +28,13 @@ bool isPermutation(char word1[], unsigned int size1, char word2[], unsigned int 
 	int i = 0, j = 0;
 	char* word1Aux = new char[size1];
 	char* word2Aux = new char[size2];
+	bool* letterAlreadyChecked = new bool[size2];
 	int counter = 0;
 
 	memcpy(word1Aux, word1, size1);
 	memcpy(word2Aux, word2, size2);
+
+	fill_n(letterAlreadyChecked, size2, false);
 
 	
 	
@@ -70,28 +73,19 @@ bool isPermutation(char word1[], unsigned int size1, char word2[], unsigned int 
 					{
 						if (word1[i] == word2[j])
 						{
-							if (word1[i - 1] == word1[j - 1] && word1[i + 1] == word1[j + 1])
-							{
-								/*if(counter>0)*/ counter--;
-							}
-
-							if (word1[i - 1] != word1[j - 1] && word1[i + 1] == word1[j + 1]
-								||
-								word1[i - 1] == word1[j - 1] && word1[i + 1] != word1[j + 1])
-							{
-								counter++;
-							}
-
 							if (word1[i - 1] != word1[j - 1] && word1[i + 1] != word1[j + 1])
 							{
-								counter++;
+								if (!letterAlreadyChecked[j])
+								{
+									counter++;
+									letterAlreadyChecked[j] = true;
+								}
 							}
-							break;
 						}
 					}
 				}
-				cout << endl << counter << endl;
-				if (counter >= (2 * (size1 - 1) / 3))
+
+				if (counter <= (2 * (size1 - 1) / 3))
 				{
 					isPartialPermutation = true;
 				}
@@ -105,6 +99,7 @@ bool isPermutation(char word1[], unsigned int size1, char word2[], unsigned int 
 
 	delete[] word1Aux;
 	delete[] word2Aux;
+	delete[] letterAlreadyChecked;
 
 	return isPartialPermutation;
 }
