@@ -1,7 +1,18 @@
+/*
+ * Created by Pedro Merencio Primo Passos
+ *
+ * This source code file contains the implementation
+ * to a method that checks if one string is a partial
+ * -permutation of the other.
+ *
+ * It is assumed each string contains only one word.
+*/
+
 #include <iostream>
 
 using namespace std;
 
+// Local function to sort arrays.
 void sorting(char word[], unsigned int size)
 {
 	char temp;
@@ -25,16 +36,16 @@ void sorting(char word[], unsigned int size)
 bool isPermutation(char word1[], unsigned int size1, char word2[], unsigned int size2)
 {
 	bool isPartialPermutation = false;
-	int i = 0, j = 0;
+	int i = 0;
 	char* word1Aux = new char[size1];
 	char* word2Aux = new char[size2];
-	bool* letterAlreadyChecked = new bool[size2];
+	bool* letterNotChecked = new bool[size2];
 	int counter = 0;
 
 	memcpy(word1Aux, word1, size1);
 	memcpy(word2Aux, word2, size2);
 
-	fill_n(letterAlreadyChecked, size2, false);
+	fill_n(letterNotChecked, size2, true);
 
 	
 	
@@ -55,13 +66,14 @@ bool isPermutation(char word1[], unsigned int size1, char word2[], unsigned int 
 		// Checking is strings are anagram
 		sorting(word1Aux, size1);
 		sorting(word2Aux, size2);
+
 		if (memcmp(word1Aux, word2Aux, size1) != 0)
 		{
 			isPartialPermutation = false;
 		}
 		else
 		{
-			if (size1 <= 4)
+			if (size1-1 <= 3) // The '\r' character at the end does not count.
 			{
 				isPartialPermutation = true;
 			}
@@ -69,19 +81,9 @@ bool isPermutation(char word1[], unsigned int size1, char word2[], unsigned int 
 			{
 				for (i = 1; i < size1; i++)
 				{
-					for (j = 1; j < size1; j++)
+					if (word1[i] != word2[i])
 					{
-						if (word1[i] == word2[j])
-						{
-							if (word1[i - 1] != word1[j - 1] && word1[i + 1] != word1[j + 1])
-							{
-								if (!letterAlreadyChecked[j])
-								{
-									counter++;
-									letterAlreadyChecked[j] = true;
-								}
-							}
-						}
+						counter++;
 					}
 				}
 
@@ -99,7 +101,7 @@ bool isPermutation(char word1[], unsigned int size1, char word2[], unsigned int 
 
 	delete[] word1Aux;
 	delete[] word2Aux;
-	delete[] letterAlreadyChecked;
+	delete[] letterNotChecked;
 
 	return isPartialPermutation;
 }
